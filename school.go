@@ -27,8 +27,18 @@ func main() {
 	r.POST("/api/todos/", postTodos)
 	r.DELETE("/api/todos/:id", deleteTodosById)
 
-	r.Run(":1234")
+	port := getPort()
+	r.Run(port)
 
+}
+
+func getPort() string {
+	var port = os.Getenv("PORT") // ----> (A)
+	if port == "" {
+		port = "1234"
+		fmt.Println("No Port In Heroku" + port)
+	}
+	return ":" + port // ----> (B)
 }
 
 func deleteTodosById(c *gin.Context) {
